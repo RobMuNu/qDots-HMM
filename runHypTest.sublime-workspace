@@ -1,0 +1,669 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"num",
+				"numTrials"
+			],
+			[
+				"dtmc",
+				"dtmcDOT"
+			],
+			[
+				"prompt",
+				"promptTrials"
+			],
+			[
+				"alpha",
+				"alphaNull"
+			],
+			[
+				"promp",
+				"promptSig"
+			],
+			[
+				"dist",
+				"distPLARPoff"
+			],
+			[
+				"datS",
+				"datSrtOff"
+			],
+			[
+				"datFr",
+				"datFreqsOff"
+			],
+			[
+				"datTable",
+				"datTableOff"
+			],
+			[
+				"log",
+				"logprob"
+			],
+			[
+				"dat",
+				"datH0"
+			],
+			[
+				"CG2kprob",
+				"CG2kprobsOne"
+			],
+			[
+				"CG2ktalbe",
+				"CG2ktableOne"
+			],
+			[
+				"CG2ktabl",
+				"CG2ktableOne"
+			],
+			[
+				"dir",
+				"dirCmuJoin"
+			],
+			[
+				"xla",
+				"xlabel"
+			],
+			[
+				"waitT",
+				"waitTableZero"
+			],
+			[
+				"CG2kbin",
+				"CG2kbinsOne"
+			],
+			[
+				"siz",
+				"sizeCG2kalphaZero"
+			],
+			[
+				"size",
+				"sizeCG2kalpha"
+			],
+			[
+				"CG2kp",
+				"CG2kprobsOne"
+			],
+			[
+				"fi",
+				"figBar"
+			],
+			[
+				"CG2kfre",
+				"CG2kfreqsOne"
+			],
+			[
+				"CG2kal",
+				"CG2kalpha"
+			],
+			[
+				"nCGdat",
+				"nCGdat"
+			],
+			[
+				"waitM",
+				"waitMaxZero"
+			],
+			[
+				"waitMx",
+				"waitMaxOne"
+			],
+			[
+				"wait",
+				"waitOne"
+			],
+			[
+				"datLi",
+				"datList0"
+			],
+			[
+				"fin",
+				"findZero"
+			],
+			[
+				"safe",
+				"safeState"
+			],
+			[
+				"idx",
+				"idxStartZero"
+			],
+			[
+				"CG2k",
+				"CG2kalphaZero"
+			],
+			[
+				"uni",
+				"unique"
+			],
+			[
+				"nC",
+				"nCGdatZero"
+			],
+			[
+				"CG2kalp",
+				"CG2kalphaZero"
+			],
+			[
+				"CG",
+				"CG2kalphaOne"
+			],
+			[
+				"au",
+				"aUpperZero"
+			],
+			[
+				"Lam",
+				"LambdaZero"
+			],
+			[
+				"aUPp",
+				"aUpperZero"
+			],
+			[
+				"aUpp",
+				"aUpperOne"
+			],
+			[
+				"Lamb",
+				"LambdaOne"
+			],
+			[
+				"aU",
+				"aUpperZero"
+			],
+			[
+				"CG2",
+				"CG2kbinsZero"
+			],
+			[
+				"aLower",
+				"aLowerZero"
+			],
+			[
+				"alp",
+				"alphaFull"
+			],
+			[
+				"wai",
+				"waitOne"
+			],
+			[
+				"ma",
+				"maximumC"
+			],
+			[
+				"al",
+				"alphabet1"
+			],
+			[
+				"total",
+				"totalSuccessive"
+			],
+			[
+				"guess",
+				"guess_col"
+			],
+			[
+				"CutZenriTopCR",
+				"CutZenriTopCRBJet"
+			],
+			[
+				"CutZenriTop",
+				"CutZenriTopCRMET"
+			],
+			[
+				"CutZenr",
+				"CutZenriMll"
+			],
+			[
+				"CutZgM",
+				"CutZgCRMll"
+			],
+			[
+				"CutZgC",
+				"CutZgCRMET"
+			],
+			[
+				"CutWZ",
+				"CutWZCRZwin"
+			],
+			[
+				"CR",
+				"CR"
+			],
+			[
+				"CutZenri",
+				"CutZenriZVeto"
+			],
+			[
+				"CutZen",
+				"CutZenri2Jets"
+			],
+			[
+				"Cut0",
+				"Cut0_Blinding"
+			],
+			[
+				"CutT",
+				"CutTrigger"
+			],
+			[
+				"CutLep",
+				"CutLep12"
+			],
+			[
+				"Cut",
+				"CutLep0"
+			],
+			[
+				"w",
+				"weightname"
+			],
+			[
+				"weig",
+				"weightExpression"
+			],
+			[
+				"cut",
+				"cutExpression"
+			],
+			[
+				"eWZW",
+				"eWZWgSR3emt"
+			],
+			[
+				"eWZWg",
+				"eWZWg_SR3"
+			],
+			[
+				"eWZ",
+				"eWZWgSR12emt"
+			],
+			[
+				"WZW",
+				"WZWgSR3emt"
+			],
+			[
+				"WZ",
+				"WZWg_SR3"
+			],
+			[
+				"etot",
+				"etotbkg_SR3"
+			],
+			[
+				"WH_SR",
+				"WH_SR3"
+			],
+			[
+				"X",
+				"XTickLabel"
+			],
+			[
+				"WH",
+				"WH_SR12"
+			],
+			[
+				"ssh",
+				"sshdomain"
+			],
+			[
+				"eph",
+				"ephrasefake"
+			],
+			[
+				"csv_r1_r2_",
+				"csv_r1_r2_r3_r4"
+			],
+			[
+				"csv",
+				"csv_r1_r2_r3"
+			],
+			[
+				"CAF",
+				"CAF_1Sep2016"
+			],
+			[
+				"sc",
+				"script_filename"
+			],
+			[
+				"iter",
+				"iter_cvalB"
+			],
+			[
+				"cut_param",
+				"cut_param_b"
+			],
+			[
+				"cut_pa",
+				"cut_param_a"
+			],
+			[
+				"iter_c",
+				"iter_cvalA"
+			],
+			[
+				"code",
+				"code_version"
+			],
+			[
+				"cut1",
+				"cut1_val"
+			],
+			[
+				"ra",
+				"rapLib"
+			],
+			[
+				"m",
+				"myAge"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 392.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"brow",
+				"Preferences: Browse Packages"
+			],
+			[
+				"ayu",
+				"ayu: Activate theme"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: ",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 476.0
+	},
+	"console":
+	{
+		"height": 126.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = '6f4c264a24d933ce70df5dedcf1dcaee' + 'ebe013ee18cced0ef93d5f746d80ef60'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/Users/Tangerine/Dropbox/00-PROJECTS/a-active/EPSILON/modelling/ConfusionMatrix/d2-400nw-t0-cen-CG2k-L3.dot",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/a-active/EPSILON/modelling/ConfusionMatrix/spareparts/transition_grab.sh",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/a-active/EPSILON/modelling/EpsilonDistance/runDistMeas.m",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/a-active/EPSILON/modelling/ConfusionMatrix/dot_to_graph.m",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/a-active/EPSILON/data/GY-binarised/thresh-central/dat-CG2k-nosplit/runCSSR-allQD-CG2k-nosplit.sh",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/a-active/EPSILON/modelling/ConfusionMatrix/nllHMM.m",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/a-active/EPSILON/data/GY-binarised/thresh-central/masterAnalysisV03.m",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/a-active/EPSILON/modelling/ConfusionMatrix/fa_log.m",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/a-active/EPSILON/modelling/ConfusionMatrix/spareparts/transition_trinity.sh",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/a-active/EPSILON/data/GY-binarised/thresh-central/dat-CG2k-nosplit/scan-200409-160215/results/d2-400nw-t0-cen-CG2k/eM-graphs/dotFiles/d2-400nw-t0-cen-CG2k-L3.dot",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/a-active/EPSILON/data/GY-binarised/thresh-central/dat-CG2k-nosplit/scan-200409-160215/results/d1-100nw-t0-cen-CG2k/eM-graphs/dotFiles/d1-100nw-t0-cen-CG2k-L3.dot",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/a-active/EPSILON/modelling/ConfusionMatrix/ztest.m",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/a-active/EPSILON/modelling/ConfusionMatrix/fa_hmm.m",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/a-active/EPSILON/modelling/ConfusionMatrix/roll.m",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/a-active/EPSILON/modelling/ConfusionMatrix/findHMMGamma.m",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/a-active/EPSILON/modelling/EpsilonDistance/pr_heavy.m",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/a-active/EPSILON/modelling/ConfusionMatrix/findLRTGamma.m",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/a-active/EPSILON/meetings/2020-07-20/Confusion matrix stuff.txt",
+		"/Users/Tangerine/Desktop/How to infer a model.txt",
+		"/Users/Tangerine/Desktop/Confusion matrix stuff.txt",
+		"/Users/Tangerine/src/qiskit/qex6-BernsteinVazirani.ipynb",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/MGRO Development/Time for Research/notes.txt",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/MGRO Development/Secrets of Successful PhD Students/notes.txt",
+		"/Volumes/SILVERBIT/Trinity/Corona/README.txt",
+		"/Volumes/SILVERBIT/Trinity/Corona/thoughts-MBI-2.txt",
+		"/Users/Tangerine/Dropbox/Curriculum Vitae/additions.txt",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/a-active/EPSILON/data/GY-binarised/thresh-central/dat-CG2k/runCSSR-allQD-CG2k.sh",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/a-active/EPSILON/data/GY-binarised/thresh-central/traj2RP.m",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/a-active/EPSILON/data/GY-binarised/thresh-central/check2kCGsplit.m",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/a-active/EPSILON/data/GY-binarised/thresh-central/check2kCGnosplit.m",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/a-active/EPSILON/data/GY-binarised/thresh-central/runCSSR-allQD-CG2k-nosplit.sh",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/a-active/EPSILON/data/GY-binarised/thresh-central/check2kCG-nosplit.m",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/a-active/EPSILON/data/GY-binarised/thresh-central/check2kCG-nosplit.matlab",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/a-active/EPSILON/data/GY-binarised/thresh-central/check2kCG.m",
+		"/Users/Tangerine/Desktop/dat-CoV2",
+		"/Users/Tangerine/Desktop/alpha-CoV2",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/b-review/ATMAN/CSSR/scripts/CSSR-2D-skm-auto-X.sh",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/a-active/EPSILON/data/GY-binarised/thresh-central/runCSSR-allQD-CG2k.sh",
+		"/Users/Tangerine/Desktop/references.bib",
+		"/Users/Tangerine/Desktop/mainText.tex",
+		"/Users/Tangerine/Desktop/apsrev4-1_prx.bst",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/a-active/EPSILON/data/GY-binarised/thresh-central/2kCG-check.m",
+		"/Users/Tangerine/Desktop/KL.txt",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/a-active/EPSILON/data/GY-binarised/thresh-central/d1-100nw-t0-cen",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/a-active/EPSILON/modelling/RP shotgun dist and histos/masterAnalysis.m",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/a-active/EPSILON/modelling/RP shotgun dist and histos/masterAnalysisV03.m",
+		"/Users/Tangerine/Desktop/Desk/Undergrad/B.Science/2015 S2/PHYS3080/Cosmological Constant/Scripts/P2/fit_models_BAO.m",
+		"/Users/Tangerine/Desktop/Desk/Undergrad/B.Science/2015 S2/PHYS3080/Cosmological Constant/Scripts/P2/fit_models.m",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/a-active/EPSILON/data/GY-binarised/thresh-central/scan-200312-151636/results/d1-100nw-t0-cen/eM-graphs/dotFiles/d1-100nw-t0-cen-L9.dot",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/a-active/EPSILON/data/GY-binarised/thresh-sigma/scan-200312-152401/results/d1-400nw-t1-sig/eMinfo-d1-400nw-t1-sig",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/a-active/EPSILON/data/GY-binarised/thresh-sigma/scan-200312-152401/results/d1-400nw-t1-sig/Cmu-d1-400nw-t1-sig",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/a-active/EPSILON/data/GY-binarised/thresh-central/scan-200312-151636/results/d4-100nw-t0-cen/eM-graphs/dotFiles/d4-100nw-t0-cen-L15.dot",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/a-active/EPSILON/data/GY-binarised/thresh-central/scan-200312-151636/results/d1-400nw-t1-cen/eMinfo-d1-400nw-t1-cen",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/a-active/EPSILON/data/GY-binarised/thresh-central/scan-200312-151636/results/d1-100nw-t0-cen/eMinfo-d1-100nw-t0-cen",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/a-active/EPSILON/data/GY-binarised/thresh-central/scan-200312-144756/results/d1-400nw-t1-cen/Cmu-d1-400nw-t1-cen",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/a-active/EPSILON/data/GY-binarised/thresh-central/scan-200312-144756/results/d1-400nw-t1-cen/eMinfo-d1-400nw-t1-cen",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/a-active/EPSILON/data/GY-binarised/thresh-central/scan-200312-144756/results/d1-100nw-t0-cen/eMinfo-d1-100nw-t0-cen",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/a-active/EPSILON/data/GY-binarised/thresh-central/scan-200312-144756/results/d1-100nw-t0-cen/Cmu-d1-100nw-t0-cen",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/a-active/EPSILON/data/GY-binarised/thresh-central/scan-200312-095033/results/d1-100nw-t0-cen/eMinfo-d1-100nw-t0-cen",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/a-active/EPSILON/data/GY-binarised/thresh-central/scan-200312-095033/results/d1-100nw-t0-cen/Cmu-d1-100nw-t0-cen",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/a-active/EPSILON/data/GY-binarised/thresh-central/scan-200312-095033/results/d1-100nw-t0-cen/eM-graphs/dotFiles/d1-100nw-t0-cen-L13.dot",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/a-active/EPSILON/data/GY-binarised/thresh-central/scan-200312-095033/results/d1-100nw-t0-cen/eM-graphs/dotFiles/d1-100nw-t0-cen-L12.dot",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/a-active/EPSILON/data/GY-binarised/thresh-central/scan-200312-095033/results/d1-100nw-t0-cen/eM-graphs/dotFiles/d1-100nw-t0-cen-L11.dot",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/a-active/EPSILON/data/GY-binarised/thresh-central/scan-200312-095033/results/d1-100nw-t0-cen/eM-graphs/dotFiles/d1-100nw-t0-cen-L10.dot",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/a-active/EPSILON/data/GY-binarised/thresh-central/scan-200312-095033/results/d1-100nw-t0-cen/eM-graphs/dotFiles/d1-100nw-t0-cen-L9.dot",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/a-active/EPSILON/data/GY-binarised/thresh-central/scan-200312-095033/results/d1-100nw-t0-cen/eM-graphs/dotFiles/d1-100nw-t0-cen-L8.dot",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/a-active/EPSILON/data/GY-binarised/thresh-central/scan-200312-095033/results/d1-100nw-t0-cen/eM-graphs/dotFiles/d1-100nw-t0-cen-L7.dot",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/a-active/EPSILON/data/GY-binarised/thresh-central/scan-200312-095033/results/d1-100nw-t0-cen/eM-graphs/dotFiles/d1-100nw-t0-cen-L6.dot",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/a-active/EPSILON/data/GY-binarised/thresh-central/scan-200312-095033/results/d1-100nw-t0-cen/eM-graphs/dotFiles/d1-100nw-t0-cen-L5.dot",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/a-active/EPSILON/data/GY-binarised/thresh-central/scan-200312-095033/results/d1-100nw-t0-cen/eM-graphs/dotFiles/d1-100nw-t0-cen-L4.dot",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/a-active/EPSILON/data/GY-binarised/thresh-central/scan-200312-095033/results/d1-100nw-t0-cen/eM-graphs/dotFiles/d1-100nw-t0-cen-L3.dot",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/a-active/EPSILON/data/GY-binarised/thresh-central/scan-200312-095033/results/d1-100nw-t0-cen/eM-graphs/dotFiles/d1-100nw-t0-cen-L2.dot",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/a-active/EPSILON/data/GY-binarised/thresh-central/scan-200312-095033/results/d1-100nw-t0-cen/eM-graphs/dotFiles/d1-100nw-t0-cen-L1.dot",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/a-active/EPSILON/data/GY-binarised/thresh-central/scan-200312-094651/results/d2-200nw-t0-cen/eM-graphs/dotFiles/d2-200nw-t0-cen-L3.dot",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/a-active/EPSILON/data/GY-binarised/thresh-central/scan-200312-094651/results/d2-200nw-t0-cen/Cmu-d2-200nw-t0-cen",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/a-active/EPSILON/data/GY-binarised/thresh-central/scan-200312-094651/results/d1-100nw-t0-cen/Cmu-d1-100nw-t0-cen",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/a-active/EPSILON/data/GY-binarised/thresh-central/scan-200312-094651/results/d1-100nw-t0-cen/eMinfo-d1-100nw-t0-cen",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/a-active/EPSILON/data/GY-binarised/thresh-central/scan-200312-094203/results/d1-100nw-t0-cen/eM-graphs/dotFiles/d1-100nw-t0-cen-L1.dot",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/a-active/EPSILON/data/GY-binarised/thresh-central/scan-200312-094203/results/d1-100nw-t0-cen/eMinfo-d1-100nw-t0-cen",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/a-active/EPSILON/data/GY-binarised/thresh-central/scan-200312-090203/results/d1-100nw-t0-cen/eMinfo-d1-100nw-t0-cen",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/a-active/EPSILON/data/GY-binarised/thresh-central/scan-200311-163616/d1-100nw-t0-cen_info",
+		"/Users/Tangerine/RMu Dropbox/Roberto Munoz/00-PROJECTS/a-active/EPSILON/modelling/EpsilonDistance/runDistMeas.m",
+		"/Users/Tangerine/RMu Dropbox/Roberto Munoz/00-PROJECTS/a-active/EPSILON/data/Gangchen_Fig1/20160116 f001 blinking/Copy_of_antibunch_test1Copyfor_ALL_TTTRfiles.m",
+		"/Users/Tangerine/RMu Dropbox/Roberto Munoz/00-PROJECTS/a-active/EPSILON/data/Gangchen_Fig1/20160116 f001 blinking/PQ_t3r_v212.c",
+		"/Users/Tangerine/RMu Dropbox/Roberto Munoz/00-PROJECTS/a-active/EPSILON/data/Gangchen_Fig1/20160116 f001 blinking/PQ_TTTR_header.h",
+		"/Users/Tangerine/Desktop/PHS3101-2020",
+		"/Users/Tangerine/Desktop/modelValid.m",
+		"/Users/Tangerine/Desktop/A Beautiful Day In The Neighborhood (2019) [1080p] [WEBRip] [5.1] [YTS.MX]/A.Beautiful.Day.In.The.Neighborhood.2019.1080p.WEBRip.x264.AAC5.1-[YTS.MX].srt",
+		"/Users/Tangerine/Desktop/Parasite (2019) [BluRay] [1080p] [YTS.LT]/Parasite.2019.1080p.BluRay.x264-[YTS.LT].srt",
+		"/Users/Tangerine/Desktop/Model_Selection_and_Multimodel_Inference (1).bibtex",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/a-active/EPSILON/data/Gangchen_Fig1/TTTR DEMO AND MANUAL/Matlabdemo/READ_T3R.M",
+		"/Users/Tangerine/Dropbox/Curriculum Vitae/To add.txt",
+		"/Users/Tangerine/Desktop/popSum-new.txt",
+		"/Users/Tangerine/Desktop/PRX-submission/mainText-20200114.tex",
+		"/Users/Tangerine/Desktop/PRX-submission/mainText.tex",
+		"/Users/Tangerine/Desktop/mainTextInclFigures.tex",
+		"/Users/Tangerine/Desktop/popSum-old.txt",
+		"/Users/Tangerine/Desktop/PRX-submission/references.bib",
+		"/Users/Tangerine/Desktop/PRX-submission/main.tex",
+		"/Users/Tangerine/Desktop/MonQIS/arXiv-review/template/comment.tex",
+		"/Users/Tangerine/Desktop/Marcel IIT:eM",
+		"/Users/Tangerine/Desktop/Monqis discord invite link",
+		"/Users/Tangerine/src/MATLAB/BrewerMap/brewermap_view.m",
+		"/Users/Tangerine/Desktop/rev test.txt",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/b-review/ATMAN/data/fly/goodMedian/Mono/dat-wake-ch1-fly1",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/b-review/ATMAN/data/fly/goodMedian/Mono/dat-sleep-ch1-fly1",
+		"/Users/Tangerine/Desktop/KF 12 Dec",
+		"/Users/Tangerine/Desktop/Anaconda3-2019.10-MacOSX-x86_64.sh",
+		"/Users/Tangerine/Desktop/Research/Research Directions.txt",
+		"/Users/Tangerine/Desktop/TEST_CSSR_info",
+		"/Users/Tangerine/Desktop/rebuttal.tex",
+		"/Users/Tangerine/Desktop/dualCh/dat-dual-wake-ch2x9-fly8",
+		"/Users/Tangerine/Desktop/25 Nov KFL",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/rtp/2019a/report/rmunoz-rtp.tex",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/a-active/EPSILON/cppTrinity/scanOutput.txt",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/a-active/EPSILON/cppTrinity/vecSig",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/a-active/EPSILON/cppTrinity/vecCond",
+		"/Users/Tangerine/Dropbox/00-PROJECTS/a-active/EPSILON/cppTrinity/automateCSSR.sh",
+		"/Volumes/SILVERBIT/rxx/content.txt",
+		"/Volumes/SILVERBIT/tbc hunting/hunt01.txt",
+		"/Users/Tangerine/Desktop/augustian.m",
+		"/Users/Tangerine/Desktop/content",
+		"/Volumes/PLATINUM/Rules of the game.txt",
+		"/Users/Tangerine/Desktop/10.3389-fncom.2015.00105-citation.txt",
+		"/Volumes/PLATINUM/Rules of the game",
+		"/Users/Tangerine/Desktop/citations-20191031T104917.bibtex",
+		"/Users/Tangerine/Desktop/a-theoretically-based-index-of-consciousness-independent-of-sensory-processing-and-behavior.bib",
+		"/Users/Tangerine/Desktop/Desk/mishearings.txt"
+	],
+	"find":
+	{
+		"height": 40.0
+	},
+	"find_in_files":
+	{
+		"height": 102.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 26.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "runHypTest.sublime-project",
+	"replace":
+	{
+		"height": 48.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 150.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
