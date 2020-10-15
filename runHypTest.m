@@ -38,7 +38,7 @@ datOn = dat(1:2:end);
 datOff = dat(2:2:end);
 warning('Make sure all CG2k data has no empty line at EOF')
 % Name of the CSSR-generated dot file
-dotName = 'd2-400nw-t0-cen-SML-L7.dot';
+dotName = 'd2-400nw-t0-cen-SML-L3.dot';
 
 
 
@@ -381,60 +381,123 @@ clear plCIOff plCIOn plParamOff plParamOn
 % -----------------------------------------
 %        Duplicated PL-ARP Creation
 % -----------------------------------------
-% Every waiting time is repeated. If ON was 3, then OFF will be 3
-% So if the interleaved CG2k sequence is 
-% a1,b1,a2,b2,...aN,bN
-% a = on waiting time
-% b = off waiting time
-% then we can make a model where bk = ak forall k
-% that is both unifilar and has full support. It's a bit lame though since
-% all OFF transitions are fully deterministic but hey.
-% effectively what we end up if we split the on/off sequences and find their
-% distributions is that the OFF sequence is an *exact* copy of the ON sequence
-% You'd think that this model could be immediately ruled out if we observed
-% a OFF distribution != ON distribution.
-% Thats a feature. However, what if we took the off transitions and rotated or permuted
-% them about the ON HMM state? (Draw it if that helps)
-% You'd end up with an OFF distribution != the on distribution
-% the probabilities would be the same but with the bins permuted about.
-% Anyway this is just a strawman so it doesn't really matter too much
+
+doMethod = 1;
+if doMethod == 1
+    % HMM will draw from ON and OFF independently, then "echo" that
+    % pair of outcomes before drawing independently again.
+
+    % Let's not assume that the ON and OFF alphabet are the same size
+    CGAsizeOn = length(distCGPLon); % Size of ON alphabet |A_on|
+    CGAsizeOff = length(distCGPLoff); % Size of OFF alphabet |A_off|
+
+    % The number of states follows this rule:
+    % 2*|A_on|*|A_off| + |A_on| + 1
+    nEchostates = 2*CGAsizeOn*CGAsizeOff + CGAsizeOn + 1;
+    ttPLARPecho = zeros(nEchostates,nEchostates,max(CGAsizeOn,CGAsizeOff));
+
+    % Fill the available transitions
+    % There's not really a nice and symmetric way of doing this as far as I can tell
+    % so here we go:
+
+        % Sample ON elements
+        for b = 1:CGAsizeOn
+            ttPLARPecho(1,b+1,b) = distCGPLon(b);
+        end
+
+        % Sample OFF elements
+        for b = 1:CGAsizeOn
+            for c = 1:CGAsizeOff
+                ttPLARPecho(1+b,CGAsizeOn+1+(CGAsizeOff*(b-1))+c,c) = distCGPLoff(c);
+            end
+        end
+
+        % Deterministic Echo ON elements
+        d1 = 1+CGAsizeOn+(CGAsizeOn*CGAsizeOff); 
+    
+
+        for b = 1:CGAsizeOn
+            for c = 1:CGAsizeOff
+                ttPLARPecho(CGAsizeOn+1+c+(CGAsizeOff*(b-1)),...
+                    d1+c+(CGAsizeOff*(b-1)),b) = 1;
+            end
+        end
+
+        % Deterministic Echo OFF elements
+        for c = 1:CGAsizeOff
+            ttPLARPecho(d1+c:CGAsizeOff:end,1,c) = 1;
+
+            %ttPLARPecho([d1+c,d1+CGAsizeOff+c],1,c) = 1; % This will not work!
+            % It misses the bottom three deterministic elements
+            % We need to fill like
+            % Fill symbol 1:  (d+1:end) in gaps of |Aoff|
+            % Fill symbol 2: (d+2:end) in steps of |Aoff|
+            % Fill symbol 3: (d+3:end) in steps of |Aoff|
+
+            % tt([d+c,|Aoff|,:end],1,c) = 1;
 
 
-% Make it share the same alphabet size as PL-ARP by
-% making the ON transition probabilities the same as the fitted powerlaw
-% from ttPLARP
+        end
 
-maxCGPLalpha = max(length(distCGPLon),length(distCGPLoff)); % args are probs the same
-ttPLARPecho = zeros(maxCGPLalpha+1,maxCGPLalpha+1,maxCGPLalpha);
-for b = 1:maxCGPLalpha
-    ttPLARPecho(1,b+1,b) = distCGPLon(b);
-    ttPLARPecho(b+1,1,b) = 1;
-end
-% Asymptotics are trivial if we assume leaing ON always
-piPLARPecho = zeros(1,maxCGPLalpha+1);
-piPLARPecho(1) = 1;
 
-% Simulate
-% Quick and dirty method. Take simulated PLARP on bins and double them
-simPLARPecho = zeros(length(datNum),nDatSets);
-% Check whether original dataset is even or odd (fixes assignment issues)
-if rem(length(datNum),2) == 0
-    % Even assignment
-    for n = 1:nDatSets
-        simPLARPecho(1:2:end,n) = simPLARP(1:2:end,n);
-        % Do the echo
-        simPLARPecho(2:2:end,n) = simPLARP(1:2:end,n);
+    clear nEchostates distCGPLoff distCGPLon b c d1 n
+
+elseif doMethod == 2
+    % Every waiting time is repeated. If ON was 3, then OFF will be 3
+    % So if the interleaved CG2k sequence is 
+    % a1,b1,a2,b2,...aN,bN
+    % a = on waiting time
+    % b = off waiting time
+    % then we can make a model where bk = ak forall k
+    % that is both unifilar and has full support. It's a bit lame though since
+    % all OFF transitions are fully deterministic but hey.
+    % effectively what we end up if we split the on/off sequences and find their
+    % distributions is that the OFF sequence is an *exact* copy of the ON sequence
+    % You'd think that this model could be immediately ruled out if we observed
+    % a OFF distribution != ON distribution.
+    % Thats a feature. However, what if we took the off transitions and rotated or permuted
+    % them about the ON HMM state? (Draw it if that helps)
+    % You'd end up with an OFF distribution != the on distribution
+    % the probabilities would be the same but with the bins permuted about.
+    % Anyway this is just a strawman so it doesn't really matter too much
+
+
+    % Make it share the same alphabet size as PL-ARP by
+    % making the ON transition probabilities the same as the fitted powerlaw
+    % from ttPLARP
+
+    maxCGPLalpha = max(length(distCGPLon),length(distCGPLoff)); % args are probs the same
+    ttPLARPecho = zeros(maxCGPLalpha+1,maxCGPLalpha+1,maxCGPLalpha);
+    for b = 1:maxCGPLalpha
+        ttPLARPecho(1,b+1,b) = distCGPLon(b);
+        ttPLARPecho(b+1,1,b) = 1;
     end
-else
-    % Odd assignment
-    for n = 1:nDatSets
-        simPLARPecho(1:2:end,n) = simPLARP(1:2:end,n);
-        % Do the echo
-        simPLARPecho(2:2:end,n) = simPLARP(1:2:end-1,n);
-    end
-end
+    % Asymptotics are trivial if we assume leaing ON always
+    piPLARPecho = zeros(1,maxCGPLalpha+1);
+    piPLARPecho(1) = 1;
 
-clear maxCGPLalpha distCGPLoff distCGPLon b n
+    % Simulate
+    % Quick and dirty method. Take simulated PLARP on bins and double them
+    simPLARPecho = zeros(length(datNum),nDatSets);
+    % Check whether original dataset is even or odd (fixes assignment issues)
+    if rem(length(datNum),2) == 0
+        % Even assignment
+        for n = 1:nDatSets
+            simPLARPecho(1:2:end,n) = simPLARP(1:2:end,n);
+            % Do the echo
+            simPLARPecho(2:2:end,n) = simPLARP(1:2:end,n);
+        end
+    else
+        % Odd assignment
+        for n = 1:nDatSets
+            simPLARPecho(1:2:end,n) = simPLARP(1:2:end,n);
+            % Do the echo
+            simPLARPecho(2:2:end,n) = simPLARP(1:2:end-1,n);
+        end
+    end
+
+    clear maxCGPLalpha distCGPLoff distCGPLon b n
+end
 
 
 
