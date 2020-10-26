@@ -17,8 +17,6 @@ function nLLg=nllgHMM(datH0,tH0,tH1,piH0,piH1,a)
 
 if (a*100) < ((1/length(datH0(1,:)))*100)
 	disp('Significance level likely to be too small given number of indep. data sets...')
-%	disp('Press any key to continue...')
-%	pause;
 end
 
 
@@ -39,7 +37,9 @@ close(wBar);
 % I.e. if H1 is always impossible then the null should be
 % infinitely more likely. The converse should never happen for thresholding
 if length(unique(nLL)) == 1 & unique(nLL) == Inf
-	nLLg = Inf; % Strictly speaking the threshold is undefined
+	% Strictly speaking the threshold is undefined but this assignment will
+	% produce the right results
+	nLLg = Inf;
 
 
 else
@@ -49,7 +49,7 @@ else
 	% Check to see if all the log-likelihood results are unique
 	if length(unique(nLLTab(:,3)))==1
 
-		% Check to see if the significance level is too big
+		% Check to see if the significance level is too tight for number of trials
 		if (a*100) < unique(nLLTab(:,3))
 			disp(sprintf('Not enough trials to achieve sig level %g',a))
 			disp(sprintf('Tightest significance available: %g',unique(nLLTab(:,3))/100))
@@ -66,15 +66,18 @@ else
 	% If results are not unique then we'll have to do a sum loop
 	else
 		
-		% THIS IS SO BROKEN
-		% FOR A PROBABILITY SUM LOOP THE IF STATEMENT BELOW MAKES NO SENSE
 		% First check to see if the significance level is too big
-		if (a*100) < unique(nLLTab(:,3))
+		% In this instance we only really need the significance to not overshoot the
+		% first bin
+
+		if (a*100) < unique(nLLTab(1,3)) 
+
+			
 			disp(sprintf('Not enough trials to achieve sig level %g',a))
-			disp(sprintf('Tightest significance available: %g',unique(nLLTab(:,3))/100))
+			disp(sprintf('Tightest significance available: %g',unique(nLLTab(1,3))/100))
 			disp('Running Log-likelihood at new sig level...')
 			% Update significance level
-			a = unique(nLLTab(:,3))/100;
+			a = unique(nLLTab(1,3))/100; 
 		end
 
 		disp('[ Method ] Probability Sum Loop')
@@ -85,11 +88,6 @@ else
 			sumProb = sumProb + (nLLTab(iProb,3)/100);
 			if sumProb > a
 				% Ugly fix to stop overcounting
-				% I think this breaks if it overcounts on the first shot
-				% and when all results are in 1 bin (isnt this rare af?)
-				% apparently it happens :S
-				% This can happen during stress testing where the length of
-				% data is very short. 
 				sumProb = sumProb - (nLLTab(iProb,3)/100); 
 				iProb = iProb - 1;
 				break;
