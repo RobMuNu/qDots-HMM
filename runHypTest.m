@@ -414,8 +414,6 @@ if doMethod == 1
 
         % Deterministic Echo ON elements
         d1 = 1+CGAsizeOn+(CGAsizeOn*CGAsizeOff); 
-    
-
         for b = 1:CGAsizeOn
             for c = 1:CGAsizeOff
                 ttPLARPecho(CGAsizeOn+1+c+(CGAsizeOff*(b-1)),...
@@ -426,21 +424,33 @@ if doMethod == 1
         % Deterministic Echo OFF elements
         for c = 1:CGAsizeOff
             ttPLARPecho(d1+c:CGAsizeOff:end,1,c) = 1;
-
-            %ttPLARPecho([d1+c,d1+CGAsizeOff+c],1,c) = 1; % This will not work!
-            % It misses the bottom three deterministic elements
-            % We need to fill like
-            % Fill symbol 1:  (d+1:end) in gaps of |Aoff|
-            % Fill symbol 2: (d+2:end) in steps of |Aoff|
-            % Fill symbol 3: (d+3:end) in steps of |Aoff|
-
-            % tt([d+c,|Aoff|,:end],1,c) = 1;
-
-
         end
 
+    % Simulate
+    % Quick and dirty method
+    % Allocate memory
+    simPLARPecho = zeros(2*length(datNum),nDatSets);
+    % Check whether original dataset is even or odd (fixes assignment issues)
+    if rem(length(datNum),2) == 0
+        % Even assignment
+        for n = 1:nDatSets
+            % Reshape the data vector into on/off pairs (col1 on, col2 off)
+            % Then repeat the on/off pairs
+            % Reshape back into a vector
+            simPLARPecho(:,n) = reshape(repelem(reshape(simPLARP(:,n),2,[])',2,1)',1,[])';
+        end
+    else
+        % Odd assignment
+        % Just shave off the last datapoint
+        for n = 1:nDatSets
+            simPLARPecho(:,n) = reshape(repelem(reshape(simPLARP(1:end-1,n),2,[])',2,1)',1,[])';
+        end
+    end
+    % Cut to fit original dataset
+    simPLARPecho = simPLARPecho(1:length(datNum),:);
 
     clear nEchostates distCGPLoff distCGPLon b c d1 n
+
 
 elseif doMethod == 2
     % Every waiting time is repeated. If ON was 3, then OFF will be 3
@@ -479,6 +489,16 @@ elseif doMethod == 2
     % Simulate
     % Quick and dirty method. Take simulated PLARP on bins and double them
     simPLARPecho = zeros(length(datNum),nDatSets);
+
+    % 
+    for n = 1:nDatSets
+        % Copy every second element to every fourth one until half the seq length
+        simPLARPecho(1:4:end,n) = simPLARP(1:2:end/2,n);
+        simPLARPecho(2:4:end,n) = simPLARP(2:2:end/2,n);
+    end
+
+
+
     % Check whether original dataset is even or odd (fixes assignment issues)
     if rem(length(datNum),2) == 0
         % Even assignment
