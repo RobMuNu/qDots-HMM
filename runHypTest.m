@@ -426,6 +426,9 @@ if doMethod == 1
             ttPLARPecho(d1+c:CGAsizeOff:end,1,c) = 1;
         end
 
+    piPLARPecho = zeros(1,nEchostates);
+    piPLARPecho(1) = 1;
+
     % Simulate
     % Quick and dirty method
     % Allocate memory
