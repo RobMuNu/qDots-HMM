@@ -1,12 +1,11 @@
 % Perform hypothesis between HMM architectures based off a data set
-% INPUT:        A CG2k-compressed dataset (interleaved, leading ON)
-%               The two split CG2k datasets (on and off)
-%               The dot file for the CSSR graph obtained from the CG2k qd data
+% INPUT:        A CG-compressed dataset (interleaved, leading ON)
+%               The dot file for the CSSR graph obtained from the CG qd data
 %               Desired significance level
 %               Number of independent trials to run for thresholding            
 %
 % OUTPUT:       Confusion matrices for all Hypothesised test pairs
-%               Rejection decisions of all test pairs based off real CG2k data
+%               Rejection decisions of all test pairs based off real CG data
 %               (Optional) Statistical power vs. Data length plots 
 
 % TEST PAIRS:   PL-ARP vs FAIR COIN
@@ -14,8 +13,9 @@
 %               PL-ARP vs DUPLICATED PL-ARP
 %               PL-ARP vs CSSR
     
-% NOTES:        Req. Binarised QD trace datafile in running dir
-%               Req. CG2k datafile(s) (joint and state split) 
+% NOTES:        
+%               Req. CG datafile(s) (joint and state split) in dir
+%               Req. (Optional) Binarised QD trace datafile in running dir 
 %
 %               Req. Log forward algorithm fa_log.m in running dir
 %               Req. Random n-sided dice roller roll.m in running dir
@@ -24,7 +24,47 @@
 %               Req. CSSR dot file to transition matrix dot_to_transition2.m
 %               Req. Generalised harmonic number function genHarm.m
 %
-%               All the data simulated is in the CG2k compression!!
+%               All the data simulated is in the CG compression!!
+
+
+
+% ---------------------------
+%          Inputs
+% ---------------------------
+
+% % Get compressed blinking quantum dot data
+% datFilePattern = fullfile(pwd, '*-SML'); % Change to whatever pattern you need.
+% theData = dir(datFilePattern);
+
+% % Get graphviz dot files inferred from CSSR
+% dotFilePattern = fullfile(pwd, '*.dot'); 
+% theGraphviz = dir(dotFilePattern);
+
+
+%promptTrials = 'Enter amount of desired trials: ';
+%nDatSets = input(promptTrials);
+nDatSets = 1000;
+
+%promptSig = 'Enter desired significance level: ';
+%siglevel = input(promptSig);
+siglevel = 0.01;
+
+% Make folder to put results in
+resName = horzcat('results-',datestr(now,30));
+mkdir(resName);
+
+
+% LOOP FOR DATA, AND INSIDE THAT LOOP FOR LAMBDA
+% for k = 1:length(theData)
+%     datName = theData(k).name;
+%     fullFileName = fullfile(theData(k).folder, datName);
+%     fprintf(1, 'Now reading %s\n', fullFileName);
+
+%     % Now do whatever you want with this file name,
+    
+% end
+
+
 
 % ---------------------------
 %      Data Importing
@@ -39,7 +79,6 @@ datOff = dat(2:2:end);
 warning('Make sure all CG2k data has no empty line at EOF')
 % Name of the CSSR-generated dot file
 dotName = 'd2-400nw-t0-cen-SML-L3.dot';
-
 
 
 % Grab interleaved data emission statistics
@@ -107,37 +146,6 @@ warning(warnText)
 % therefore we can check unique(diff(alphabet)) == 1;
 clear warnText
 
-
-% Create waiting time trajectory from the binary quantum dot intensity trace
-% This is only really used for method 2 ARP creation
-datInfo=dir('*-cen');
-datNames={datInfo.name};
-traj = fileread(datNames{1});
-% Quickly convert the string into a numerical array
-traj = traj-'0';
-% Convert the binary trace to state-split waiting times
-findOn = find(diff([0,traj,0]==1)); % For one
-findOff = find(diff([1,traj,1]==0)); % For zero
-% Find starting indices of *blocks* of ones and zeros
-idxStartOn = findOn(1:2:end-1);  % Starting indices of 1's blocks
-idxStartOff = findOff(1:2:end-1);  % Start indices
-% The generalised waiting times
-waitOn = findOn(2:2:end)-idxStartOn;  % Consecutive ones counts
-waitOff = findOff(2:2:end)-idxStartOff;  % Consecutive zeros counts
-clear findOn findOff idxStartOff idxStartOn traj datInfo datNames
-
-
-
-% ---------------------------
-%       Data Generation
-% ---------------------------
-promptTrials = 'Enter amount of desired trials: ';
-nDatSets = input(promptTrials);
-%nDatSets = 50;
-
-promptSig = 'Enter desired significance level: ';
-siglevel = input(promptSig);
-%siglevel = 0.05;
 
 
 % ---------------------------
@@ -265,6 +273,26 @@ if plCase == 1
 
 elseif plCase == 2
     % ---- Case 2 ----
+
+    % Create waiting time trajectory from the binary quantum dot intensity trace
+    % This is only really used for method 2 ARP creation
+    datInfo=dir('*-cen');
+    datNames={datInfo.name};
+    traj = fileread(datNames{1});
+    % Quickly convert the string into a numerical array
+    traj = traj-'0';
+    % Convert the binary trace to state-split waiting times
+    findOn = find(diff([0,traj,0]==1)); % For one
+    findOff = find(diff([1,traj,1]==0)); % For zero
+    % Find starting indices of *blocks* of ones and zeros
+    idxStartOn = findOn(1:2:end-1);  % Starting indices of 1's blocks
+    idxStartOff = findOff(1:2:end-1);  % Start indices
+    % The generalised waiting times
+    waitOn = findOn(2:2:end)-idxStartOn;  % Consecutive ones counts
+    waitOff = findOff(2:2:end)-idxStartOff;  % Consecutive zeros counts
+    clear findOn findOff idxStartOff idxStartOn traj datInfo datNames
+
+
     waitMax = max([waitOn,waitOff]);
 
     waitTabOn = tabulate(waitOn);
@@ -574,8 +602,6 @@ idxDLen = 1;
 wBar2 = waitbar(0,'Data length power scanning...');
 for dLen = dLenRange
 
-    
-
     % ---------------------------------
     %     Hypothesis pair thresholds
     % ---------------------------------
@@ -587,36 +613,44 @@ for dLen = dLenRange
     simSets(:,:,4) = simCSSR(1:dLen,:);
     simSets(:,:,5) = simPLARP(1:dLen,:);
 
+    % Calculate the thresholds for all the hypothesis pairs
+    threshPair = zeros(1,4);
+    nLLPair = zeros(1,4);
+    % Pair 1    H0: FCoin vs. H1: PLARP
+    threshPair(1) = nllgHMM(simSets(:,:,1),...
+                            ttFCoin,ttPLARP,...
+                            piFCoin,piPLARP,...
+                            siglevel);
+    nLLPair(1) = nllHMM(datNum, ttFCoin, ttPLARP, piFCoin, piPLARP);
+
+    % Pair 2    H0: BCoin vs. H1: PLARP
+    threshPair(2) = nllgHMM(simSets(:,:,2),...
+                            ttBCoin,ttPLARP,...
+                            piBCoin,piPLARP,...
+                            siglevel);
+    nLLPair(2) = nllHMM(datNum, ttBCoin, ttPLARP, piBCoin, piPLARP);
+
+    % Pair 3    H0: PLARPecho vs. H1: PLARP
+    threshPair(3) = nllgHMM(simSets(:,:,3),...
+                            ttPLARPecho,ttPLARP,...
+                            piPLARPecho,piPLARP,...
+                            siglevel);
+    nLLPair(3) = nllHMM(datNum, ttPLARPecho, ttPLARP, piPLARPecho, piPLARP);
+
+    % Pair 4    H0: CSSR vs. H1: PLARP
+    threshPair(4) = nllgHMM(simSets(:,:,4),...
+                            ttCSSR,ttPLARP,...
+                            piCSSR,piPLARP,...
+                            siglevel);
+    nLLPair(4) = nllHMM(datNum, ttCSSR, ttPLARP, piCSSR, piPLARP);
+
+
     % TESTING / DEBUGGING
     % simSets(:,:,1) = simFCoin(1:dLen,:);
     % simSets(:,:,2) = simBCoin(1:dLen,:);
     % simSets(:,:,3) = simPLARPecho(1:dLen,:); 
     % simSets(:,:,4) = simPLARP(1:dLen,:);
     % simSets(:,:,5) = simCSSR(1:dLen,:);
-
-
-    % Calculate the thresholds for all the hypothesis pairs
-    threshPair = zeros(1,4);
-    % Pair 1    H0: FCoin vs. H1: PLARP
-    threshPair(1) = nllgHMM(simSets(:,:,1),...
-                            ttFCoin,ttPLARP,...
-                            piFCoin,piPLARP,...
-                            siglevel);
-    % Pair 2    H0: BCoin vs. H1: PLARP
-    threshPair(2) = nllgHMM(simSets(:,:,2),...
-                            ttBCoin,ttPLARP,...
-                            piBCoin,piPLARP,...
-                            siglevel);
-    % Pair 3    H0: PLARPecho vs. H1: PLARP
-    threshPair(3) = nllgHMM(simSets(:,:,3),...
-                            ttPLARPecho,ttPLARP,...
-                            piPLARPecho,piPLARP,...
-                            siglevel);
-    % Pair 4    H0: CSSR vs. H1: PLARP
-    threshPair(4) = nllgHMM(simSets(:,:,4),...
-                            ttCSSR,ttPLARP,...
-                            piCSSR,piPLARP,...
-                            siglevel);
 
     % Calculate the thresholds for all the hypothesis pairs
     % !!! TESTING / DEBUGGING VERSION BELOW !!!
@@ -642,74 +676,77 @@ for dLen = dLenRange
     %                         piCSSR,piPLARP,...
     %                         siglevel);
 
+    % TESTING / DEBUGGING
+    % ttAll = {ttFCoin, ttBCoin, ttPLARPecho, ttPLARP, ttCSSR};
+    % piAll = {piFCoin, piBCoin, piPLARPecho, piPLARP, piCSSR};
+
+
     % ---------------------------
     %     Confusion Matrix
     % ---------------------------
     % Do this based on the number of trials
     % The full training set consists of ALL the simulated sets from H0 and H1
     % for a full number of trials as 2*nDatSets (cause why not)
-
     % Need all thresholds, a set of labeled datasets, nllHMM to test them with
 
     % Make a cell array of all the transition tensors
     ttAll = {ttFCoin, ttBCoin, ttPLARPecho, ttCSSR, ttPLARP};
     piAll = {piFCoin, piBCoin, piPLARPecho, piCSSR, piPLARP};
 
-    % TESTING / DEBUGGING
-    % ttAll = {ttFCoin, ttBCoin, ttPLARPecho, ttPLARP, ttCSSR};
-    % piAll = {piFCoin, piBCoin, piPLARPecho, piPLARP, piCSSR};
-
     % Initialise the confusion matrix
-    matConf = zeros(2,2,4);
-    for pair = 1:4 % default 1:4 (4 hypothesis pairs)
-        wBar = waitbar(0,'Counting confusion matrix...');
+    doConfusion = 0;
+    if doConfusion == 1
+        matConf = zeros(2,2,4);
+        for pair = 1:4 % default 1:4 (4 hypothesis pairs)
+            wBar = waitbar(0,'Counting confusion matrix...');
 
-        for j = 1:nDatSets
+            for j = 1:nDatSets
 
-            % run the nll test (for BOTH hypotheses! and fill the confusion matrixs)
-            confTrueH0 = nllHMM(simSets(:,j,pair),...
-                    ttAll{pair},ttAll{5},...
-                    piAll{pair},piAll{5});
+                % run the nll test (for BOTH hypotheses! and fill the confusion matrixs)
+                confTrueH0 = nllHMM(simSets(:,j,pair),...
+                        ttAll{pair},ttAll{5},...
+                        piAll{pair},piAll{5});
 
-            confTrueH1 = nllHMM(simSets(:,j,5),...
-                    ttAll{pair},ttAll{5},...
-                    piAll{pair},piAll{5});
+                confTrueH1 = nllHMM(simSets(:,j,5),...
+                        ttAll{pair},ttAll{5},...
+                        piAll{pair},piAll{5});
 
-            % % ----------TESTING / DEBUGGING ---------
-            % confTrueH0 = nllHMM(simSets(:,j,5),...
-            %         ttAll{5},ttAll{pair},...
-            %         piAll{5},piAll{pair});
+                % % ----------TESTING / DEBUGGING ---------
+                % confTrueH0 = nllHMM(simSets(:,j,5),...
+                %         ttAll{5},ttAll{pair},...
+                %         piAll{5},piAll{pair});
 
-            % confTrueH1 = nllHMM(simSets(:,j,pair),...
-            %         ttAll{5},ttAll{pair},...
-            %         piAll{5},piAll{pair});
-            % % ---------------------------------------
+                % confTrueH1 = nllHMM(simSets(:,j,pair),...
+                %         ttAll{5},ttAll{pair},...
+                %         piAll{5},piAll{pair});
+                % % ---------------------------------------
 
-            % Fill in confusion matrix for this round
-            % True H1
-            if confTrueH1 < threshPair(pair)
-                % detect H1 | H1 true (TP)
-                matConf(1,1,pair) = matConf(1,1,pair)+1;
-            else
-                % detect H0 | H1 true (FN)
-                matConf(1,2,pair) = matConf(1,2,pair)+1;
+                % Fill in confusion matrix for this round
+                % True H1
+                if confTrueH1 < threshPair(pair)
+                    % detect H1 | H1 true (TP)
+                    matConf(1,1,pair) = matConf(1,1,pair)+1;
+                else
+                    % detect H0 | H1 true (FN)
+                    matConf(1,2,pair) = matConf(1,2,pair)+1;
+                end
+
+                % True H0
+                if confTrueH0 < threshPair(pair)
+                    % detect H1 | H0 true (FP)
+                    matConf(2,1,pair) = matConf(2,1,pair)+1;
+                else
+                    % detect H0 | H0 true (TN)
+                    matConf(2,2,pair) = matConf(2,2,pair)+1;
+                end
+                waitbar(j/nDatSets,wBar)
+
             end
+            close(wBar);
 
-            % True H0
-            if confTrueH0 < threshPair(pair)
-                % detect H1 | H0 true (FP)
-                matConf(2,1,pair) = matConf(2,1,pair)+1;
-            else
-                % detect H0 | H0 true (TN)
-                matConf(2,2,pair) = matConf(2,2,pair)+1;
-            end
-            waitbar(j/nDatSets,wBar)
-
+            powVec(idxDLen,pair) = matConf(1,1,pair);
+            
         end
-        close(wBar);
-
-        powVec(idxDLen,pair) = matConf(1,1,pair);
-        
     end
 
     waitbar(idxDLen/length(dLenRange),wBar2)
@@ -727,6 +764,28 @@ powVec = powVec./nDatSets;
 clear idxDLen dLen
 clear simFCoin simBCoin simPLARP simCSSR simPLARPecho
 
+
+% Write results to file
+% Make sure you write it to the results directory!
+cd fullfile(pwd,resName)
+fidResults = fopen('results.txt', 'a+');
+
+fprintf(fidResults, 'Data:\n');
+fprintf(fidResults, '\t%s\n', datName);
+fprintf(fidResults, 'H1 list:\n');
+fprintf(fidResults, '\tFDice \tBDice \tPLARPecho \tCSSR\n');
+fprintf(fidResults, 'nLL Thresholds:\n');
+fprintf(fidResults, '%12.2f %12.2f %12.2f %12.2f', threshPair)
+fprintf(fidResults, '\nnLL:\n');
+fprintf(fidResults, '%12.2f %12.2f %12.2f %12.2f', nLLPair);
+fprintf(fidResults, '\nAccept H1?\n');
+fprintf(fidResults, '%d\t %d\t %d\t %d\t\n\n\n',...
+                    nLLPair(1)<threshPair(1),...
+                    nLLPair(2)<threshPair(2),...
+                    nLLPair(3)<threshPair(3),...
+                    nLLPair(4)<threshPair(4));
+fclose(fidResults);
+cd ..
 
 
 % ------------------------------------------
