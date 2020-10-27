@@ -1,0 +1,13 @@
+digraph "d4-300nw-t0-cen-SML" {
+size = "6,8.5";
+ratio = "fill";
+node [shape = circle];
+node [fontsize = 24];
+edge [fontsize = 24];
+0 -> 1 [label = "a: 0.8693   "];
+0 -> 0 [label = "b: 0.09806  "];
+0 -> 0 [label = "c: 0.03269  "];
+1 -> 1 [label = "a: 0.7491   "];
+1 -> 0 [label = "b: 0.1927   "];
+1 -> 0 [label = "c: 0.05815  "];
+}

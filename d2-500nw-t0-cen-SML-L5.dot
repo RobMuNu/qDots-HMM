@@ -1,0 +1,22 @@
+digraph "d2-500nw-t0-cen-SML" {
+size = "6,8.5";
+ratio = "fill";
+node [shape = circle];
+node [fontsize = 24];
+edge [fontsize = 24];
+0 -> 0 [label = "a: 0.8087   "];
+0 -> 1 [label = "b: 0.1598   "];
+0 -> 0 [label = "c: 0.03148  "];
+1 -> 2 [label = "a: 0.8602   "];
+1 -> 1 [label = "b: 0.1149   "];
+1 -> 0 [label = "c: 0.02482  "];
+2 -> 3 [label = "a: 0.6538   "];
+2 -> 1 [label = "b: 0.2961   "];
+2 -> 0 [label = "c: 0.05011  "];
+3 -> 4 [label = "a: 0.884    "];
+3 -> 1 [label = "b: 0.09513  "];
+3 -> 0 [label = "c: 0.02088  "];
+4 -> 0 [label = "a: 0.7008   "];
+4 -> 1 [label = "b: 0.2651   "];
+4 -> 0 [label = "c: 0.03412  "];
+}
