@@ -1,4 +1,5 @@
 % Compare two CSSR HMMs at different max memory lengths to the data
+% to see whether longer memory is a better fit or not
 % This script uses local functions which need at least R2016b MATLAB
 
 
@@ -14,7 +15,7 @@ mkdir(resName);
 for dSet = 1:length(datList)
 	datName = datList(dSet).name;
 	datPath = fullfile(datList(dSet).folder, datName);
-	fprint(1, 'Now reading %s\n', datName);
+	fprintf(1, 'Now reading %s\n', datName);
 
 	% Get graphviz dot files inferred from CSSR
 	gvizFilePattern = fullfile(pwd, horzcat(datName,'*.dot'));
@@ -29,7 +30,7 @@ for dSet = 1:length(datList)
 	[ttMin, piMin, ~] = dot_to_transition2(dotNameMin,getAlphabet(datName),1);
 	[ttMax, piMax, ~] = dot_to_transition2(dotNameMax,getAlphabet(datName),1);
 	
-    nLL = nLLHMM(importDat(datName),ttMin,ttMax,piMin,piMax);
+    nLL = nllHMM(importDat(datName),ttMin,ttMax,piMin,piMax);
 
     cd(fullfile(pwd,resName))
     fidResults = fopen('eMcomparison.txt', 'a+');
@@ -42,7 +43,7 @@ for dSet = 1:length(datList)
         fprintf(fidResults, '%s More likely given data', dotNameMin);
     elseif nLL < 0
         fprintf(fidResults, '%s More likely given data', dotNameMax);
-    elseif nLL = 1
+    elseif nLL == 1
         fprintf(fidResults, 'Both eMs equally likely');
     else
         fprintf(fidResults, '[ERROR] nLL calculation failed');
