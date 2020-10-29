@@ -15,7 +15,7 @@
     
 % NOTES:        
 %               Req. CG datafile(s) (joint and state split) in dir
-%               Req. (Optional) Binarised QD trace datafile in running dir 
+%               (Opt) Req. Binarised QD trace datafile in running dir 
 %
 %               Req. Log forward algorithm fa_log.m in running dir
 %               Req. Random n-sided dice roller roll.m in running dir
