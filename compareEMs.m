@@ -40,13 +40,13 @@ for dSet = 1:length(datList)
     fprintf(fidResults, 'H1:\t%s\n', dotNameMax);
     fprintf(fidResults, 'nLL:\t%1.2f\n', nLL);
     if nLL > 0
-        fprintf(fidResults, '%s More likely given data', dotNameMin);
+        fprintf(fidResults, '%s More likely given data\n\n', dotNameMin);
     elseif nLL < 0
-        fprintf(fidResults, '%s More likely given data', dotNameMax);
+        fprintf(fidResults, '%s More likely given data\n\n', dotNameMax);
     elseif nLL == 1
-        fprintf(fidResults, 'Both eMs equally likely');
+        fprintf(fidResults, 'Both eMs equally likely\n\n');
     else
-        fprintf(fidResults, '[ERROR] nLL calculation failed');
+        fprintf(fidResults, '[ERROR] nLL calculation failed\n\n');
     end
 
     cd ..
