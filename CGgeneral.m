@@ -69,7 +69,7 @@ function output = CGgeneral(dat,x,method,overflow)
 	% Nested functions needed for this to work
 	% Function to calculate log of any base
 	 function logb = logbase(x,base)
-	 	logb = log(x)./log(base);
+	 	logb = log10(x)./log10(base);
 	 end
 
 	 % Func. to read binary trajectory and convert to wait times
