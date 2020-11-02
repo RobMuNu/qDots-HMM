@@ -35,7 +35,7 @@ for dat = 1:numel(datNames)
 		fprintf(fidAlpha, '%s\n', alphaCG);
 		fprintf(fidLambda, '%d\n', lamCG);
 
-		nameCG = sprintf(qName+'-EXb%d',b);
+		nameCG = sprintf(qName+'-EXb%02d',b);
 		dlmwrite(nameCG, datCG, '');
 
 		fclose(fidAlpha);
