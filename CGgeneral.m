@@ -5,7 +5,7 @@ function output=CGgeneral(dat,x,method,overflow)
 % Compression sends raw waiting times into intervals defined
 % by exponential, or powerlaw rules:
 % EXP:			[x^k, x^(k+1)) (k the variable, x the chosen base)
-% PL:			[x^k, (x+1)^k) (x the variable, k the chosen power)
+% PL:			[a^x, (a+1)^x) (a the variable, x the chosen power)
 
 
 % INPUTS:		dat - numerical, binary (0,1) photon trajectory. 1 line.
@@ -13,7 +13,8 @@ function output=CGgeneral(dat,x,method,overflow)
 %				method - 'exp' or 'pl' compression rules
 %				overflow - which bin number to make the overflow
 
-% OUTPUT:		Compressed (interleaved, leading ON) dataset
+% OUTPUT:		Compressed (interleaved, leading ON) dataset 
+%				alphanumeric string of compressed alphabet symbols
 
 
 % Check inputs ok
@@ -37,37 +38,35 @@ end
 
 
 % Perform compression methods
-if method == 'exp'
-	if overflow == 0
-		
-		% EXP bin index rule for matlab
-		% k(w) = floor(log_x(w))+1
+alphaFull = 'a':'z';
+if overflow > 1
+	% Brainless implementation of overflow bin
+	% Will work for powerlaw or exponential bin intervals
+	% as long as you don't have absurdly long waiting times
+	alphaFull(overflow+1:end) = alphaFull(overflow);
+end
 
-	elseif overflow > 0
-		% check whether its greater than the number of bins that would have 
-		% been made automatically (hard to do?)
-
-	end
+if method == 'exp'	
+	% Waiting time to EXP bin index rule for matlab
+	% k(w) = floor(log_x(w))+1
+	[waitDat,~] = traj2wait(dat);
+	CGexpBins = floor(logbase(waitDat,x))+1;
+	output{1,1} = sprintf('Compressed data under %s method\n',method);
+	output{1,2} = alphaFull(CGexpBins);
 
 elseif method == 'pl'
-	if overflow == 0
-
-		% PL bin index rule for matlab
-		% x(w) = floor(w^(1/k))
-
-	elseif overflow > 0 
-		% check whether its greater than the number of bins that would have 
-		% been made automatically (hard to do?)
-
-	end
+	% Waiting time to PL bin index rule for matlab
+	% x(w) = floor(w^(1/k))
+	[waitDat,~] = traj2wait(dat);
+	CGplBins = floor(waitDat.^(1/x));
+	output{1,1} = sprintf('Compressed data under %s method\n',method);
+	output{1,2} = alphaFull(CGplBins);
 
 end
 
 
 
-	% Function to 
-  indexRule = @(w) floor(log2(w))+1;
-  zipfPMF = @(x,a) x.^(-a) ./ genHarm(waitMax,a);
+
 
 
 	% Function to calculate log of any base
@@ -78,7 +77,7 @@ end
 
 
 	 % Func. to read binary trajectory and convert to wait times
-	 function waitDat = traj2wait(traj)
+	 function [waitDat,waitMax] = traj2wait(traj)
 	 	% traj must already be a numerical, binary dataset! 1 line!
         % No idea what these do
         findOne = find(diff([0,traj,0]==1)); % For one
@@ -106,6 +105,9 @@ end
         	waitDat((1:length(waitOne))*2) = waitOne;
         	waitDat(1) = [];
         end
+
+        % Find the longest waiting time
+        waitMax = max(max(waitOne),max(waitZero));
 	 end
 
 
