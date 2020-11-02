@@ -1,4 +1,4 @@
-function output=CGgeneral(dat,x,method,overflow)
+function output = CGgeneral(dat,x,method,overflow)
 % Description:
 % Converts raw photon trajectory dataset into a compressed
 % (interleaved, leading ON) waiting-time dataset.
@@ -10,71 +10,67 @@ function output=CGgeneral(dat,x,method,overflow)
 
 % INPUTS:		dat - numerical, binary (0,1) photon trajectory. 1 line.
 %				x - base or exponent
-%				method - 'exp' or 'pl' compression rules
+%				method - 'ex' or 'pl' compression rules
 %				overflow - which bin number to make the overflow
 
 % OUTPUT:		Compressed (interleaved, leading ON) dataset 
 %				alphanumeric string of compressed alphabet symbols
 
 
-% Check inputs ok
-if method ~= 'exp' & method ~= 'pl'
-	error("CG method must be either 'exp' or 'pl'");
-	return;
+	% Check inputs ok
+	if ~strcmpi(method,'ex') & ~strcmpi(method,'pl')
+		error("CG method must be either 'ex' or 'pl'");
+		return;
 
-elseif overflow < 0 
-	error('Overflow must be 0 or positive integer');
-	return;
+	elseif overflow < 0 
+		error('Overflow must be 0 or positive integer');
+		return;
 
-elseif method == 'exp' & x <= 1
-	error("Exponent base 'x' must be positive integer > 1 for 'exp' method");
-	return;
+	elseif strcmpi(method,'ex') & x <= 1
+		error("Exponent base 'x' must be positive integer > 1 for 'ex' method");
+		return;
 
-elseif method == 'pl' & x <= 0 
-	error("Power 'x' must be positive integer for 'pl' method");
-	return;
+	elseif strcmpi(method,'pl') & x <= 0 
+		error("Power 'x' must be positive integer for 'pl' method");
+		return;
 
-end
-
-
-% Perform compression methods
-alphaFull = 'a':'z';
-if overflow > 1
-	% Brainless implementation of overflow bin
-	% Will work for powerlaw or exponential bin intervals
-	% as long as you don't have absurdly long waiting times
-	alphaFull(overflow+1:end) = alphaFull(overflow);
-end
-
-if method == 'exp'	
-	% Waiting time to EXP bin index rule for matlab
-	% k(w) = floor(log_x(w))+1
-	[waitDat,~] = traj2wait(dat);
-	CGexpBins = floor(logbase(waitDat,x))+1;
-	output{1,1} = sprintf('Compressed data under %s method\n',method);
-	output{1,2} = alphaFull(CGexpBins);
-
-elseif method == 'pl'
-	% Waiting time to PL bin index rule for matlab
-	% x(w) = floor(w^(1/k))
-	[waitDat,~] = traj2wait(dat);
-	CGplBins = floor(waitDat.^(1/x));
-	output{1,1} = sprintf('Compressed data under %s method\n',method);
-	output{1,2} = alphaFull(CGplBins);
-
-end
+	end
 
 
+	% Perform compression methods
+	alphaFull = 'a':'z';
+	if overflow > 1
+		% Brainless implementation of overflow bin
+		% Will work for powerlaw or exponential bin intervals
+		% as long as you don't have absurdly long waiting times
+		% If the overflow bin is set to a waiting time greater than
+		% what is present in the data, then this will do nothing to the output
+		alphaFull(overflow+1:end) = alphaFull(overflow);
+	end
 
+	if method == 'ex'	
+		% Waiting time to EXP bin index rule for matlab
+		% k(w) = floor(log_x(w))+1
+		[waitDat,~] = traj2wait(dat);
+		CGexpBins = floor(logbase(waitDat,x))+1;
+		output{1,1} = sprintf('Compressed data under %s method\n',method);
+		output{1,2} = alphaFull(CGexpBins);
 
+	elseif method == 'pl'
+		% Waiting time to PL bin index rule for matlab
+		% x(w) = floor(w^(1/k))
+		[waitDat,~] = traj2wait(dat);
+		CGplBins = floor(waitDat.^(1/x));
+		output{1,1} = sprintf('Compressed data under %s method\n',method);
+		output{1,2} = alphaFull(CGplBins);
 
+	end
 
+	% Nested functions needed for this to work
 	% Function to calculate log of any base
-	 function logbase = logb(x,base)
-	 	logbase = log(x)./log(base);
+	 function logb = logbase(x,base)
+	 	logb = log(x)./log(base);
 	 end
-
-
 
 	 % Func. to read binary trajectory and convert to wait times
 	 function [waitDat,waitMax] = traj2wait(traj)
@@ -109,6 +105,9 @@ end
         % Find the longest waiting time
         waitMax = max(max(waitOne),max(waitZero));
 	 end
+
+end
+
 
 
 
