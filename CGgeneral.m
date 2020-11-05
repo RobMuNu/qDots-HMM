@@ -36,7 +36,6 @@ function output = CGgeneral(dat,x,method,overflow)
 
 	end
 
-
 	% Perform compression methods
 	alphaFull = 'a':'z';
 	if overflow > 1
@@ -55,6 +54,7 @@ function output = CGgeneral(dat,x,method,overflow)
 		CGexpBins = floor(logbase(waitDat,x))+1;
 		output{1,1} = sprintf('Compressed data under %s method\n',method);
 		output{1,2} = alphaFull(CGexpBins);
+
 
 	elseif method == 'pl'
 		% Waiting time to PL bin index rule for matlab
