@@ -12,6 +12,8 @@ sig = 0.01;
 % Initialize the heatmap matrix
 matAcceptMemory = zeros(10,10,2);
 
+wBar = waitbar(0,'Doing a button of comparisons...');
+wCount = 0;
 
 for x = 2:10
 	% For all quantum dots @ CG bin size
@@ -35,6 +37,17 @@ for x = 2:10
 		gvFilePattern = fullfile(pwd, horzcat(strDotName,'*.dot'));
 		gvList = dir(gvFilePattern);
 
+		% Read the correct line from the alphabet vector
+		fid = fopen(alphaVec.name);
+		cellAline = textscan(fid,'%s',1,'delimiter','\n','headerlines',(x-1)-1);
+		cellAvec = cellAline{1};
+		if isempty(cellAvec)
+			error('Tried to index a lambda longer than the available alphabet vector')
+			return;
+		end
+		alphaString = cellAvec{1};
+		fclose(fid);
+
 
 		% Construct and simulate the ARP for this data
 		[ttARP, piARP, simARP] = makeARP(strDotName,nTrials);
@@ -44,16 +57,7 @@ for x = 2:10
 			% For a specific quantum dot @ CG bin size & CSSR lambda
 			strCSSRName = gvList(lam).name;
 
-			% Read the correct line from the alphabet vector
-			fid = fopen(alphaVec.name);
-			cellAline = textscan(fid,'%s',1,'delimiter','\n','headerlines',lam-1);
-			cellAvec = cellAline{1};
-			if isempty(cellAvec)
-				error('Tried to index a lambda longer than the available alphabet vector')
-				return;
-			end
-			alphaString = cellAvec{1};
-			fclose(fid);
+			
 
 			% Get CSSR model for the dot @ this CG base & lambda
 			[ttCSSR, piCSSR, tmCSSR] = dot_to_transition2(strCSSRName,alphaString,1);
@@ -73,9 +77,11 @@ for x = 2:10
 			else
 				% Reject CSSR
 				matAcceptMemory(x,lam,2) = matAcceptMemory(x,lam,2) + 1;
-
+			end
+			wCount = wCount + 1;
+			waitbar(wCount/783,wBar)
 		end
 	end 
 end
-
+close(wBar);
 
