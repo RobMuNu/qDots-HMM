@@ -20,22 +20,39 @@ for x = 2:10
 
 		% For a specific quantum dot @ CG bin size
 		strDotName = datList(dSet).name;
+		alphaFilePattern = fullfile(pwd,...
+							horzcat(erase(strDotName,...
+							erase(strBaseExtension,'*')),...
+							'-ALPHA'));
+		alphaVec = dir(alphaFilePattern); % Should only ever index 1 file 
 		gvFilePattern = fullfile(pwd, horzcat(strDotName,'*.dot'));
 		gvList = dir(gvFilePattern);
 
 
-		% Construct the ARP for the dot @ this CG base
-
+		% Construct and simulate the ARP for this data
+		[ttARP, piARP, simARP] = makeARP(strDotName,1000);
 
 
 		for lam = 1:length(gvList)
 			% For a specific quantum dot @ CG bin size & CSSR lambda
 			strCSSRName = gvList(lam).name;
 
+			% Read the correct line from the alphabet vector
+			fid = fopen(alphaVec.name);
+			cellAline = textscan(fid,'%s',1,'delimiter','\n','headerlines',lam-1);
+			cellAvec = cellAline{1};
+			if isempty(cellAvec)
+				error('Tried to index a lambda longer than the available alphabet vector')
+				return;
+			end
+			alphaString = cellAvec{1};
+			fclose(fid);
+
 			% Get CSSR model for the dot @ this CG base & lambda
+			[ttCSSR, piCSSR, tmCSSR] = dot_to_transition2(strCSSRName,alphaString,1)
 
-
-
+			% Simulate CSSR
+			simCSSR = simulateCSSR(!!!!!!!!!!,1000,ttCSSR,tmCSSR)
 
 
 		end
@@ -46,11 +63,77 @@ for x = 2:10
 end
 
 
+% -------------------------------------
+% -------------------------------------
+
 % Locally defined functions 
-function datNum = importDat(datName)
-% IMPORTDAT Local function that imports a coarse-grained datafile
-% and translates it into a numerical rather than alphabetical sequence
+
+% -------------------------------------
+% -------------------------------------
+
+function [datNum, datProbs, datProbsOn, datProbsOff] = importDat(datName)
+	% IMPORTDAT Local function that imports a coarse-grained datafile
+	% and translates it into a numerical rather than alphabetical sequence
+	%
+	% Also grabs probabilities
 	dat = fileread(datName);
+	datOn = dat(1:2:end);
+	datOff - dat(2:2:end);
+
+	% Grab interleaved data emission statistics
+	datTable = tabulate(dat'); % transpose for row vector data
+	datFreqs = cell2mat(datTable(:,2)); % get letter frequencies
+	datProbs = datFreqs./length(dat); % get letter probabilities
+	datTable(:,4) = num2cell(datProbs);
+	[~, datSrt] = sort([datTable{:,1}],'ascend');
+	datSrtTab = datTable(datSrt,:);
+	datAlpha = [datSrtTab{:,1}]; % This ensures that the emission alphabet is sorted
+	datProbs = [datSrtTab{:,4}];
+
+	% The forward algorithm won't recognize alphanumeric sequences
+	% We will need to convert the path to numerical emissions
+	datRange = 1:length(datAlpha); 
+	datNum = zeros(1,length(dat));
+	for i = 1:length(datAlpha)
+	    datNum(strfind(dat,datAlpha(i))) = datRange(i);
+	end   
+
+	% Grab split data emission statistics (same procedure as above)
+	datTableOn = tabulate(datOn');
+	datTableOff = tabulate(datOff');
+	datFreqsOn = cell2mat(datTableOn(:,2)); % get letter frequencies
+	datFreqsOff = cell2mat(datTableOff(:,2)); 
+	datProbsOn = datFreqsOn./length(datOn); % get letter probabilities
+	datProbsOff = datFreqsOff./length(datOff); 
+	datTableOn(:,4) = num2cell(datProbsOn);
+	datTableOff(:,4) = num2cell(datProbsOff);
+	[~, datSrtOn] = sort([datTableOn{:,1}],'ascend');
+	[~, datSrtOff] = sort([datTableOff{:,1}],'ascend');
+	datSrtTabOn = datTableOn(datSrtOn,:);
+	datSrtTabOff = datTableOff(datSrtOff,:);
+	datAlphaOn = [datSrtTabOn{:,1}]; % This ensures that the emission alphabet is sorted
+	datAlphaOff = [datSrtTabOff{:,1}]; 
+	datProbsOn = [datSrtTabOn{:,4}];
+	datProbsOff = [datSrtTabOff{:,4}];
+
+	datRangeOn = 1:length(datAlphaOn); 
+	datNumOn = zeros(1,length(datOn));
+	for i = 1:length(datAlphaOn)
+	    datNumOn(strfind(datOn,datAlphaOn(i))) = datRangeOn(i);
+	end
+
+	datRangeOff = 1:length(datAlphaOff); 
+	datNumOff = zeros(1,length(datOff));
+	for i = 1:length(datAlphaOff)
+	    datNumOff(strfind(datOff,datAlphaOff(i))) = datRangeOff(i);
+	end
+end
+
+
+function [datAlpha, datAlphaOn, datAlphaOff] = getAlphabet(datName)
+	dat = fileread(datName);	
+	datOn = dat(1:2:end);
+	datOff = dat(2:2:end);
 
 	% Grab interleaved data emission statistics
     datTable = tabulate(dat'); % transpose for row vector data
@@ -60,40 +143,32 @@ function datNum = importDat(datName)
     [~, datSrt] = sort([datTable{:,1}],'ascend');
     datSrtTab = datTable(datSrt,:);
     datAlpha = [datSrtTab{:,1}]; % This ensures that the emission alphabet is sorted
-    datProbs = [datSrtTab{:,4}];
-   
-    % The forward algorithm won't recognize alphanumeric sequences
-    % We will need to convert the path to numerical emissions
-    datRange = 1:length(datAlpha); 
-    datNum = zeros(1,length(dat));
-    for i = 1:length(datAlpha)
-        datNum(strfind(dat,datAlpha(i))) = datRange(i);
-    end   
+
+    datTableOn = tabulate(datOn');
+    datTableOff = tabulate(datOff');
+    datFreqsOn = cell2mat(datTableOn(:,2)); % get letter frequencies
+    datFreqsOff = cell2mat(datTableOff(:,2)); 
+    datProbsOn = datFreqsOn./length(datOn); % get letter probabilities
+    datProbsOff = datFreqsOff./length(datOff); 
+    datTableOn(:,4) = num2cell(datProbsOn);
+    datTableOff(:,4) = num2cell(datProbsOff);
+    [~, datSrtOn] = sort([datTableOn{:,1}],'ascend');
+    [~, datSrtOff] = sort([datTableOff{:,1}],'ascend');
+    datSrtTabOn = datTableOn(datSrtOn,:);
+    datSrtTabOff = datTableOff(datSrtOff,:);
+    datAlphaOn = [datSrtTabOn{:,1}]; % This ensures that the emission alphabet is sorted
+    datAlphaOff = [datSrtTabOff{:,1}]; 
 end
 
 
-function datAlpha = getAlphabet(datName)
-	dat = fileread(datName);
-
-	% Grab interleaved data emission statistics
-    datTable = tabulate(dat'); % transpose for row vector data
-    datFreqs = cell2mat(datTable(:,2)); % get letter frequencies
-    datProbs = datFreqs./length(dat); % get letter probabilities
-    datTable(:,4) = num2cell(datProbs);
-    [~, datSrt] = sort([datTable{:,1}],'ascend');
-    datSrtTab = datTable(datSrt,:);
-    datAlpha = [datSrtTab{:,1}]; % This ensures that the emission alphabet is sorted
-end
-
-
-function [ttDOT, piDOT, tmDOT] = dot_to_transition2(filename,alphabet,doFuzz)
+function [ttDOT, piDOT, tmDOT] = dot_to_transition2(filename,alphabetVec,doFuzz)
 	% Exctracts a transition tensor, and the asymptotics of the flattened matrix
 	% from a GraphViz file http://www.research.att.com/sw/tools/graphviz
 	%
 	% INPUT:  'filename' - the file in DOT format containing the graph layout
 	%                       where graph is a unifilar HMM
 	%                       Labels should satisfy <symbol:probability> format
-	%           'alphabet' - string vector of all the CG2k alphabet
+	%           'alphabetVec' - string vector of all the CG2k alphabet
 	%                       symbols expressed in the HMM (same as alphabet
 	%                       file used by CSSR to generate DOT file
 	%           'doFuzz' - flag which asks the function to make a "fuzzy"
@@ -105,15 +180,6 @@ function [ttDOT, piDOT, tmDOT] = dot_to_transition2(filename,alphabet,doFuzz)
 	% OUTPUT:   'ttDOT' - the transition tensor of the unifilar HMM 
 	%           'piDOT' - the vector of asymptotics simulated from the HMM
 	%           'tmDOT' - flattened transition tensor (the transition matrix)
-
-	%
-	% NOTES: Only tested on directed, ergodic & unifilar graphs.
-	%       Only tested on DOT output generated from CSSR algorithm
-	%       Assumes some metadata in the DOT file is always structured
-	%        the same way 
-	%       The rows of the transition matrix pulled from DOT don't always
-	%       Sum to 1. This is usually due to rounding errors, but is rectified
-	%       via the dtmc function. 
 
 	% Read file into cell array of lines ignoring c style comments
 	dotFile = textread(filename,'%s','delimiter','\n','commentstyle','c');  
@@ -132,7 +198,7 @@ function [ttDOT, piDOT, tmDOT] = dot_to_transition2(filename,alphabet,doFuzz)
 	% Get number of states
 	nStates = split(dot_lines(end,:),' ');
 	nStates = str2num(nStates{1})+1;
-	nAlpha = length(alphabet);
+	nAlpha = length(alphabetVec);
 
 	% Initialise transition tensor and asymptotic vector
 	ttDOT = zeros(nStates,nStates,nAlpha);
@@ -152,16 +218,14 @@ function [ttDOT, piDOT, tmDOT] = dot_to_transition2(filename,alphabet,doFuzz)
 
 	    aTemp = erase(dotline{6},':');
 	    aTemp = erase(aTemp,'"');
-	    if isempty(strfind(alphabet,aTemp))
+	    if isempty(strfind(alphabetVec,aTemp))
 	        error('No matching DOT symbol to alphabet. Check supplied alphabet same as the one which generated the dot file.');
 	        return;
 	    end
 	    ttDOT(str2double(dotline{1})+1,...
 	        str2double(dotline{3})+1,...
-	        strfind(alphabet,aTemp)) = str2double(dotline{7});
-	    
+	        strfind(alphabetVec,aTemp)) = str2double(dotline{7});   
 	end
-
 
 	% Do fuzzy version?
 	if doFuzz == 0
@@ -173,12 +237,10 @@ function [ttDOT, piDOT, tmDOT] = dot_to_transition2(filename,alphabet,doFuzz)
 	    piDOT = asymptotics(dtmcDOT);
 
 	elseif doFuzz == 1
-
 	    % Fill in zero transitions with a small error
 	    % Let's just make it 1/100th of the smallest existing nonzero transition
 	    ttDOT(find(ttDOT==0)) = min(ttDOT(ttDOT>0))/100;
 	 
-
 	    % Evaluate state asymptotics from transition matrix
 	    % Flatten transition tensor across alphabet dimension
 	    tmDOT = zeros(nStates,nStates);
@@ -186,27 +248,62 @@ function [ttDOT, piDOT, tmDOT] = dot_to_transition2(filename,alphabet,doFuzz)
 	    dtmcDOT = dtmc(tmDOT);
 	    piDOT = asymptotics(dtmcDOT);
 
-
 	else 
 	    error('doFuzz should be 0 or 1')
 	    return;
-	end
-
-
-
-	disp('dot_to_transition2: Check there are no CG2k alphabet letters skipped!')
+	end     
 end
 
 
-function [ttPLARP, piPLARP] = makeARP(zeros(2,2,max(length(datAlphaOn),length(datAlphaOff))));
+function simCSSR = simulateCSSR(datNum,nDatSets,ttDOT,tmDOT)
+
+	% Simulation step
+	dtmcCSSR = dtmc(tmDOT);
+	% Now we need to get symbol emissions
+    simCSSR = zeros(length(datNum),nDatSets);
+    for j = 1:nDatSets 
+        s = simulate(dtmcCSSR,length(datNum)+1);
+        for t = 1:length(datNum)
+
+            % Find the nonzero probability symbols that can be emitted
+            z1 = find(ttDOT(s(t), s(t+1),:));
+            z2 = reshape(ttDOT(s(t),s(t+1),find(ttDOT(s(t),s(t+1),:))),[1,length(z1)]);
+            eProbs = [z1, z2'];
+
+            % eProbs is now a probability distribution of possible emissions given the
+            % state transition at the current step. Draw from it
+            if length(eProbs(:,1)) == 1
+                simCSSR(t,j) = eProbs(1,1);
+            else
+                simCSSR(t,j) = randsample(eProbs(:,1),1,true,eProbs(:,2));
+            end
+        end
+    end
+end
+
+
+function [ttARP, piARP, simARP] = makeARP(datName,nDatSets)
+	% INPUTS:	filename of compressed data
+	%
+	% OUTPUTS:	ARP transition tensor
+	%			ARP initial seeding vector
+	%			Simulated ARP data
+
+
     % remember symbol 1 = off, symbol 2 = on
     % Only need to fill in the off-diagonals
     % For convention set A->B = On (matrix element 1,2)
 
+    % Get split alphabet from data
+ 	[datNum, ~, datProbsOn, datProbsOff] = importDat(datName);
+    [~, datAlphaOn, datAlphaOff] = getAlphabet(datName);
+
+    % Initialise memory
+    ttARP = zeros(2,2,max(length(datAlphaOn),length(datAlphaOff)));
 
     % Note for waiting time HMMs, only the rows of the emission-flattened matrix sum to 1
-    ttPLARP(1,2,datRangeOn) = datProbsOn; % Fill A->B (On waiting times)
-    ttPLARP(2,1,datRangeOff) = datProbsOff;  % Fill B->A (Off waiting times)
+    ttARP(1,2,1:length(datAlphaOn)) = datProbsOn; % Fill A->B (On waiting times)
+    ttARP(2,1,1:length(datAlphaOff)) = datProbsOff;  % Fill B->A (Off waiting times)
     % !!! This fails if alphabet letters are skipped cf. line 63 !!!
 
 
@@ -215,57 +312,50 @@ function [ttPLARP, piPLARP] = makeARP(zeros(2,2,max(length(datAlphaOn),length(da
     % Let's just make it 1/100th of the smallest existing nonzero transition
     if length(datAlphaOn) < length(datAlphaOff)
         % ON shorter, need to fill in tt(1,2) with small micro transition
-        ttPLARP(1,2,find(ttPLARP(1,2,:)==0)) = min(ttPLARP(ttPLARP>0))/100;
+        ttARP(1,2,find(ttARP(1,2,:)==0)) = min(ttARP(ttARP>0))/100;
         % Renormalise
-        ttPLARP(1,2,:) = ttPLARP(1,2,:)./sum(ttPLARP(1,2,:));
+        ttARP(1,2,:) = ttARP(1,2,:)./sum(ttARP(1,2,:));
         
     elseif length(datAlphaOn) > length(datAlphaOff)
         % OFF shorter, need to fill in tt(2,1)
-        ttPLARP(2,1,find(ttPLARP(2,1,:)==0)) = min(ttPLARP(ttPLARP>0))/100;
+        ttARP(2,1,find(ttARP(2,1,:)==0)) = min(ttARP(ttARP>0))/100;
         % Renormalise
-        ttPLARP(2,1,:) = ttPLARP(2,1,:)./sum(ttPLARP(2,1,:));
+        ttARP(2,1,:) = ttARP(2,1,:)./sum(ttARP(2,1,:));
 
     end
 
-
     % Remember interleaved data begins at ON by construction, 
     % so pi should be (1,0) for the forward algorithm
-    piPLARP = [1,0]; % Since A->B implies On transition
-
+    piARP = [1,0]; % Since A->B implies On transition
 
     % Generate PL-ARP data
     % Doing this as two alternating biased dice
     % The fast way is to index every ODD element right away and sample
     % then index every EVEN element right away and sample
-    simPLARP = zeros(length(dat),nDatSets);
+    simARP = zeros(length(datNum),nDatSets);
 
-    distPLARPon = [ttPLARP(1,2,:)];
-    distPLARPoff = [ttPLARP(2,1,:)];
+    distPLARPon = [ttARP(1,2,:)];
+    distPLARPoff = [ttARP(2,1,:)];
     % Shave off trailing zeros on the distribution if they exist
     % (Shouldn't be the case if we do fuzzy ARP)
     distPLARPon = distPLARPon(1:find(distPLARPon,1,'last')); 
     distPLARPoff = distPLARPoff(1:find(distPLARPoff,1,'last'));
-    % Need to define these for the PLARP echo 
-    distCGPLon = distPLARPon;
-    distCGPLoff = distPLARPoff;
 
     for n = 1:nDatSets
         % Sample On wait times
-        simPLARP(1:2:end,n) = randsample(...
-            1:max(max(datRangeOn),max(datRangeOff)),...
-            length(dat(1:2:end)),...
+        simARP(1:2:end,n) = randsample(...
+            1:max(max(1:length(datAlphaOn)),max(1:length(datAlphaOff))),...
+            length(datNum(1:2:end)),...
             true,...
             distPLARPon);
 
         % Sample Off wait times
-        simPLARP(2:2:end,n) = randsample(...
-            1:max(max(datRangeOn),max(datRangeOff)),...
-            length(dat(2:2:end)),...
+        simARP(2:2:end,n) = randsample(...
+            1:max(max(1:length(datAlphaOn)),max(1:length(datAlphaOff))),...
+            length(datNum(2:2:end)),...
             true,...
             distPLARPoff);
     end
-    clear n
-
 end
 
 
@@ -273,7 +363,6 @@ function nLL=nllHMM(dat,tH0,tH1,piH0,piH1)
 
 	nLL = double(-2*log(exp(vpa(fa_log(dat,tH1,piH1)))/...
 			exp(vpa(fa_log(dat,tH0,piH0)))));
-
 end
 
 
