@@ -14,7 +14,6 @@ mkdir(resName);
 
 for dSet = 1:length(datList)
 	datName = datList(dSet).name;
-	datPath = fullfile(datList(dSet).folder, datName);
 	fprintf(1, 'Now reading %s\n', datName);
 
 	% Get graphviz dot files inferred from CSSR
