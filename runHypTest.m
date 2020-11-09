@@ -108,6 +108,9 @@ for dSet = 1:length(datList)
     % We will need to convert the path to numerical emissions for forward algorithm
     % !!! Warning: This method fails if an alphabet letter is skipped !!!
     %               e.g. Alphabet a,b,d will produce wait times 1,2,3 NOT 1,2,4 
+
+    % Maybe this doesn't actually matter unless your trying to match the
+    % wait times under the same binning between two HMMs which we aren't
     datRangeOn = 1:length(datAlphaOn); 
     datNumOn = zeros(1,length(datOn));
     for i = 1:length(datAlphaOn)
