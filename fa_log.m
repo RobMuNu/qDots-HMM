@@ -3,7 +3,8 @@ function logprob=fa_log(o, trans, ipi)
 % 
 % INPUTS:
 % o 			= 	Given emitted sequence labelled in numerics e.g. [1 2 2 1 2 1]
-% ipi 			= 	initial probability of states in a row vector
+% ipi 			= 	initial probability distrubition of states in a row vector
+%					all entries should sum to 1 and be 0 or positive
 % trans(i,j,k) 	= 	(N x N x |alphabet|) sized transition matrix 
 % 					(N x N x each possible emitted symbol). 
 % 					trans(:,:,1) contain transitions emitting a '1', etc.
