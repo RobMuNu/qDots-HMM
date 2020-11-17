@@ -44,6 +44,9 @@ if length(unique(nLL)) == 1 & unique(nLL) == Inf
 
 else
 	% Tabulate nLL results
+	% tabulate col 1: outcome
+	% tabulate col 2: outcome frequency
+	% tabulate col 3: outcome % occurrence
 	nLLTab = tabulate(nLL);
 
 	% Check to see if all the log-likelihood results are unique
@@ -52,7 +55,7 @@ else
 		% Check to see if the significance level is too tight for number of trials
 		if (a*100) < unique(nLLTab(:,3))
 			disp(sprintf('Not enough trials to achieve sig level %g',a))
-			disp(sprintf('Tightest significance available: %g',unique(nLLTab(:,3))/100))
+			disp(sprintf('Tightest significance available: %g',unique(nLLTab(:,3))/100)) % /100 to convert from percentages to probabilities
 			disp('Running Log-likelihood at new sig level...')
 			% Update significance level
 			a = unique(nLLTab(:,3))/100;
