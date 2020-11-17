@@ -82,7 +82,7 @@ else
 
 		disp('[ Method ] Probability Sum Loop')
 		sumProb = 0;
-		iProb = 0;
+		iProb = 0; % This will become the index of the likelihood distribution that the threshold is at
 		while 1
 			iProb = iProb + 1;
 			sumProb = sumProb + (nLLTab(iProb,3)/100);
